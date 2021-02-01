@@ -1,0 +1,16 @@
+{
+  "name": "auth-api-key-service",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "PORT=3000 API_KEYS_FILE_PATH=.apikeys node src/"
+  },
+  "author": "Dzmitry Lahunouski",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-status-codes": "^2.1.4"
+  }
+}
