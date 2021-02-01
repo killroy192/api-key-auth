@@ -2,6 +2,6 @@
 
 ## todos
 - [x] base implementation
-- [ ] linting
+- [x] linting
 - [ ] containerization & ducker hub automatic builds
 - [ ] redis apikeys managment (create and expiration)
