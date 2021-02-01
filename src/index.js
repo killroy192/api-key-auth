@@ -10,7 +10,7 @@ const app = express();
 
   await apiKeyValidator.readConfigFile(API_KEYS_FILE_PATH);
 
-  app.get('/auth/validate/:apiKey', (req, res) => {
+  app.get('/validate/:apiKey', (req, res) => {
     if (apiKeyValidator.validate(req.params)) {
       return res.sendStatus(httpStatusCodes.OK)
     }
