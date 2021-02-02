@@ -2,8 +2,9 @@ import http from 'http';
 import express from 'express';
 import httpStatusCodes from 'http-status-codes';
 import * as apiKeyValidator from './apiKey.js';
+import getAdminPasswd from './secret.js';
 
-const { PORT, ADMIN_PASSWD } = process.env;
+const { PORT } = process.env;
 const app = express();
 app.use(express.json());
 app.use((err, req, res, next) => {
@@ -17,6 +18,8 @@ app.use((err, req, res, next) => {
 (async () => {
   await apiKeyValidator.init();
 
+  const adminPasswd = await getAdminPasswd();
+
   app.get('/validate/:apiKey', async (req, res) => {
     const isValid = await apiKeyValidator.validate(req.params);
     const code = isValid ? httpStatusCodes.OK : httpStatusCodes.UNAUTHORIZED;
@@ -24,7 +27,7 @@ app.use((err, req, res, next) => {
   });
 
   app.post('/generate', async (req, res) => {
-    if (req.body.password === ADMIN_PASSWD) {
+    if (req.body.password === adminPasswd) {
       const newApiKey = await apiKeyValidator.create(req.body);
       return res.status(httpStatusCodes.CREATED).send({ key: newApiKey });
     }

@@ -4,12 +4,16 @@ services:
     build:
       dockerfile: dockerfile
       context: .
-    env_file: .env
+    environment:
+      ADMIN_PASSWD: /run/secrets/ADMIN_PASSWD
     restart: always
     ports:
       - 8080:8080
     volumes:
       - auth-store:/usr/src/app/keystore
+secrets:
+  ADMIN_PASSWD:
+    external: true
 volumes:
   auth-store:
 networks:
