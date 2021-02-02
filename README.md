@@ -3,5 +3,5 @@
 ## todos
 - [x] base implementation
 - [x] linting
+- [x] persistent apikeys storage (create and expiration)
 - [ ] containerization & ducker hub automatic builds
-- [ ] redis apikeys managment (create and expiration)

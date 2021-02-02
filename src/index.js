@@ -3,17 +3,32 @@ import express from 'express';
 import httpStatusCodes from 'http-status-codes';
 import * as apiKeyValidator from './apiKey.js';
 
-const { PORT, API_KEYS_FILE_PATH } = process.env;
+const { PORT, ADMIN_PASSWD } = process.env;
 const app = express();
+app.use(express.json());
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err.message);
+    return res.sendStatus(httpStatusCodes.INTERNAL_SERVER_ERROR);
+  }
+  return next();
+});
 
 (async () => {
-  await apiKeyValidator.readConfigFile(API_KEYS_FILE_PATH);
+  await apiKeyValidator.init();
 
-  app.get('/validate/:apiKey', (req, res) => {
-    if (apiKeyValidator.validate(req.params)) {
-      return res.sendStatus(httpStatusCodes.OK);
+  app.get('/validate/:apiKey', async (req, res) => {
+    const isValid = await apiKeyValidator.validate(req.params);
+    const code = isValid ? httpStatusCodes.OK : httpStatusCodes.UNAUTHORIZED;
+    return res.sendStatus(code);
+  });
+
+  app.post('/generate', async (req, res) => {
+    if (req.body.password === ADMIN_PASSWD) {
+      const newApiKey = await apiKeyValidator.create(req.body);
+      return res.status(httpStatusCodes.CREATED).send({ key: newApiKey });
     }
-    return res.sendStatus(httpStatusCodes.UNAUTHORIZED);
+    return res.sendStatus(httpStatusCodes.FORBIDDEN);
   });
 
   http.createServer(app).listen(

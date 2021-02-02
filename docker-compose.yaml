@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  auth-api-key:
+    build:
+      dockerfile: dockerfile
+      context: .
+    env_file: .env
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - auth-store:/usr/src/app/keystore
+volumes:
+  auth-store:
+networks:
+  default:

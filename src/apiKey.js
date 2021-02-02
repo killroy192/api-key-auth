@@ -1,15 +1,14 @@
-import fs from 'fs';
-import readline from 'readline';
+import storage from 'node-persist';
+import cryptoRandomString from 'crypto-random-string';
 
-const keys = [];
-
-export const readConfigFile = () => new Promise((resolve, reject) => {
-  const rl = readline.createInterface({
-    input: fs.createReadStream(new URL('../apikeys', import.meta.url)),
-  });
-  rl.on('line', keys.push.bind(keys));
-  rl.on('error', reject);
-  rl.on('close', resolve);
+export const init = () => storage.init({
+  dir: './keystore',
 });
 
-export const validate = ({ apiKey }) => keys.includes(apiKey);
+export const create = async () => {
+  const newStr = cryptoRandomString({ length: 30, type: 'url-safe' });
+  await storage.setItem(newStr, true);
+  return newStr;
+};
+
+export const validate = async ({ apiKey }) => storage.getItem(apiKey);

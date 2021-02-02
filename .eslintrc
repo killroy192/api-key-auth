@@ -6,6 +6,10 @@
     "security",
     "import"
   ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
   "extends": [
     "airbnb-base",
     "plugin:security/recommended",
@@ -13,9 +17,7 @@
     "plugin:import/warnings"
   ],
   "rules": {
-    "import/no-unresolved": [2, {"esm": true}],
-    "import/named": 2,
-    "import/namespace": 2,
-    "import/default": 2
+    "import/extensions": 0,
+    "no-console": 0
   }
 }
