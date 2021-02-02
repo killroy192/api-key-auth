@@ -1,4 +1,4 @@
-# Simple node.js api-key authorization service
+# Simple node.js api-key authorization service with docker secrets
 
 ## Features
 - [x] persistent build-in apikeys storage
