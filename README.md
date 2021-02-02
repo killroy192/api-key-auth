@@ -5,3 +5,4 @@
 - [x] linting
 - [x] persistent apikeys storage (create and expiration)
 - [ ] containerization & ducker hub automatic builds
+- [ ] usage readme
