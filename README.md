@@ -21,13 +21,9 @@
   version: "3.7"
   services:
     auth-api-key:
-      build:
-        dockerfile: dockerfile
-        context: .
-      image: auth-api-key-service_auth-api-key:latest
+      image: killroy192/auth-api-key:latest
       environment:
         ADMIN_PASSWD: /run/secrets/adm_passwd
-      restart: always
       ports:
         - 8080:8080
       volumes:
