@@ -5,9 +5,10 @@ const readFrom = promisify(readFile);
 
 const { NODE_ENV, ADMIN_PASSWD } = process.env;
 
-export default () => {
+export default async () => {
   try {
-    return NODE_ENV === 'production' ? readFrom('/run/secrets/ADMIN_PASSWD', 'utf8') : Promise.resolve(ADMIN_PASSWD);
+    const rawPasswd = NODE_ENV === 'production' ? await readFrom(ADMIN_PASSWD, 'utf-8') : ADMIN_PASSWD;
+    return rawPasswd.trim();
   } catch (err) {
     if (err.code !== 'ENOENT') {
       console.error(`An error occurred while trying to read the secret: ADMIN_PASSWD. Err: ${err}`);

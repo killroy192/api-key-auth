@@ -4,15 +4,18 @@ services:
     build:
       dockerfile: dockerfile
       context: .
+    image: auth-api-key-service_auth-api-key:latest
     environment:
-      ADMIN_PASSWD: /run/secrets/ADMIN_PASSWD
+      ADMIN_PASSWD: /run/secrets/adm_passwd
     restart: always
     ports:
       - 8080:8080
     volumes:
       - auth-store:/usr/src/app/keystore
+    secrets:
+      - adm_passwd
 secrets:
-  ADMIN_PASSWD:
+  adm_passwd:
     external: true
 volumes:
   auth-store:

@@ -7,6 +7,13 @@
 - [ ] setup TTL for apikey during generation
 - [ ] removing apikey functionality
 
+## API
+- `GET /validate/:apiKey` - check api-key
+- `POST /new-api-key` - create new api key. Body schema:
+  ```js
+  { "password": "admin_password" } 
+  ```
+
 ## Usage
 - create docker-compose config
   ```sh
@@ -14,16 +21,21 @@
   version: "3.7"
   services:
     auth-api-key:
-      image: killroy192/auth-api-key
+      build:
+        dockerfile: dockerfile
+        context: .
+      image: auth-api-key-service_auth-api-key:latest
       environment:
-        ADMIN_PASSWD: /run/secrets/ADMIN_PASSWD
+        ADMIN_PASSWD: /run/secrets/adm_passwd
       restart: always
       ports:
         - 8080:8080
       volumes:
         - auth-store:/usr/src/app/keystore
+      secrets:
+        - adm_passwd
   secrets:
-    ADMIN_PASSWD:
+    adm_passwd:
       external: true
   volumes:
     auth-store:
@@ -34,11 +46,11 @@
 - setup your secret
   ```sh
   docker swarm init
-  nano ~/secret.txt
-  docker secret create DB_PASSWORD ~/secret.txt
-  rm ~/secret.txt
+  openssl rand -hex 30 > ./secret.txt
+  docker secret create adm_passwd ./secret.txt
+  rm ./secret.txt
   ```
 - run services
   ```sh
-  docker-compose up
+  docker stack deploy --compose-file docker-compose.yaml cluster
   ```

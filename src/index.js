@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
     return res.sendStatus(code);
   });
 
-  app.post('/generate', async (req, res) => {
+  app.post('/new-api-key', async (req, res) => {
     if (req.body.password === adminPasswd) {
       const newApiKey = await apiKeyValidator.create(req.body);
       return res.status(httpStatusCodes.CREATED).send({ key: newApiKey });
