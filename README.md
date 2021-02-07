@@ -4,6 +4,7 @@
 - [x] persistent build-in apikeys storage
 - [x] generate apikey via REST api
 - [x] admin right with docker secrets
+- [ ] logging
 - [ ] setup TTL for apikey during generation
 - [ ] removing apikey functionality
 
